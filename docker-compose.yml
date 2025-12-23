@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  mysql-db:
+    image: mysql:8.0
+    container_name: deliv_mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports: ["3306:3306"]
+    volumes:
+      - ./init-databases.sh:/docker-entrypoint-initdb.d/init-databases.sh
+
+  user-service:
+    build: ./backend/user-service
+    ports: ["5001:5001"]
+    environment: &env
+      DB_HOST: mysql-db
+      DB_NAME: deliv_user
+      PORT: 5001
+    depends_on: [mysql-db]
+
+  menu-service:
+    build: ./backend/menu-service
+    ports: ["5002:5002"]
+    environment: { <<: *env, DB_NAME: deliv_menu, PORT: 5002 }
+
+  order-service:
+    build: ./backend/order-service
+    ports: ["5003:5003"]
+    environment: { <<: *env, DB_NAME: deliv_order, PORT: 5003 }
+
+  cart-service:
+    build: ./backend/cart-service
+    ports: ["5004:5004"]
+    environment: { <<: *env, DB_NAME: deliv_cart, PORT: 5004 }
+
+  payment-service:
+    build: ./backend/payment-service
+    ports: ["5005:5005"]
+    environment: { <<: *env, DB_NAME: deliv_payment, PORT: 5005 }
+
+  review-service:
+    build: ./backend/review-service
+    ports: ["5006:5006"]
+    environment: { <<: *env, DB_NAME: deliv_review, PORT: 5006 }
+
+  favorite-service:
+    build: ./backend/favorite-service
+    ports: ["5007:5007"]
+    environment: { <<: *env, DB_NAME: deliv_favorite, PORT: 5007 }
