@@ -18,6 +18,19 @@ const resolvers = {
         [args.name, args.price, args.description, args.category, args.image]
       );
       return { id: res.insertId, ...args };
+    },
+    // LOGIKA UPDATE (SQL UPDATE)
+    updateMenu: async (_, { id, name, price, description, category, image }) => {
+      await db.execute(
+        'UPDATE menus SET name=?, price=?, description=?, category=?, image=? WHERE id=?',
+        [name, price, description, category, image, id]
+      );
+      return { id, name, price, description, category, image };
+    },
+    // LOGIKA DELETE
+    deleteMenu: async (_, { id }) => {
+      await db.execute('DELETE FROM menus WHERE id=?', [id]);
+      return { success: true, id };
     }
   }
 };
