@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaEgg, FaReceipt, FaListUl, FaSignOutAlt } from 'react-icons/fa';
+import { FaMessage } from 'react-icons/fa6'; // Import icon ulasan
 import { authService } from '../../services/authService';
 
 const Sidebar = () => {
@@ -36,8 +37,17 @@ const Sidebar = () => {
           <FaListUl />
           <span>Kelola Menu</span>
         </NavLink>
-      </nav>
 
+        {/* MENU BARU: Ulasan Pelanggan */}
+        <NavLink 
+          to="/admin-reviews" 
+          className={({ isActive }) => isActive ? "active" : ""}
+        >
+          <FaMessage />
+          <span>Ulasan Pelanggan</span>
+        </NavLink>
+      </nav>
+      
       <div className="mt-auto">
         <button onClick={handleLogout} className="logout-btn d-flex align-items-center">
           <FaSignOutAlt />

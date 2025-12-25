@@ -12,13 +12,19 @@ const resolvers = {
     }
   },
   Mutation: {
-    processPayment: async (_, args) => {
-      const status = "SUCCESS"; // Logika dummy pembayaran
-      const [res] = await db.execute(
-        'INSERT INTO payments (order_id, amount, payment_method, status) VALUES (?, ?, ?, ?)',
-        [args.order_id, args.amount, args.payment_method, status]
-      );
-      return { id: res.insertId, status, ...args };
+    processPayment: async (_, { order_id, amount, payment_method }) => {
+      try {
+        // Gunakan Math.round untuk memastikan amount adalah Integer murni
+        const finalAmount = Math.round(amount);
+        const [res] = await db.execute(
+          'INSERT INTO payments (order_id, amount, payment_method, status) VALUES (?, ?, ?, ?)',
+          [order_id, finalAmount, payment_method, 'Success']
+        );
+        return { id: res.insertId, order_id, amount: finalAmount, payment_method, status: 'Success' };
+      } catch (error) {
+        console.error("DB Error:", error);
+        throw new Error("Gagal menyimpan data pembayaran");
+      }
     }
   }
 };

@@ -1,10 +1,12 @@
 const { gql } = require('apollo-server-express');
 
 module.exports = gql`
-  type Review {
+type Review {
     id: ID
     order_id: ID
     menu_id: ID
+    menu_name: String
+    quantity: Int
     customer_name: String
     rating: Int
     comment: String
@@ -19,6 +21,8 @@ module.exports = gql`
     addReview(
       order_id: ID!, 
       menu_id: ID!, 
+      menu_name: String!, 
+      quantity: Int!,
       customer_name: String!, 
       rating: Int!, 
       comment: String

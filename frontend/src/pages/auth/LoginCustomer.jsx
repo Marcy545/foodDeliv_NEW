@@ -13,7 +13,9 @@ const LoginCustomer = () => {
     try {
       const data = await authService.login(email, password);
       authService.setSession(data.token, data.user);
-      navigate('/customer-dashboard');
+      
+      // Menambahkan state agar Dashboard tahu ini adalah proses login baru
+      navigate('/customer-dashboard', { state: { fromLogin: true } });
     } catch (err) {
       alert(err.message);
     }
